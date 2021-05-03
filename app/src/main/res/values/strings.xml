@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JetSushi</string>
+    <string name="title_activity_sushi">SushiActivity</string>
 </resources>

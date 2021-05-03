@@ -1,10 +1,13 @@
 package com.sivan.jetsushi
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -227,40 +231,41 @@ fun SushiItemPreview() {
 @Composable
 fun SushiItem(item: SushiItem) {
 
-    val gradientColor1 = Color(0xFF0E0E94)
-    val gradientColor2 = Color(0xFF040424)
-
+    val context = LocalContext.current
 
     Card(modifier = Modifier
         .width(180.dp)
         .height(250.dp)
+        .clickable {
+            context.startActivity(Intent(context, SushiActivity::class.java)
+                .putExtra("sushi_item", item))
+        }
         .clip(shape = RoundedCornerShape(18.dp)),
-        elevation = 12.dp
+        elevation = 12.dp,
+
 
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    listOf(
-                        gradientColor1, gradientColor2
-                    )
-                )
-            )) {
+
             
-            Spacer(modifier = Modifier.padding(0.dp, 8.dp))
-          Image(painter = painterResource(item.image),
+            //Spacer(modifier = Modifier.padding(0.dp, 8.dp))
+          Image(
+              painter = painterResource(item.image),
             contentDescription = "avatar",
 
-              modifier = Modifier
-                  .size(72.dp)
-
-                  .align(alignment = Alignment.CenterHorizontally),
-            contentScale = ContentScale.Fit)
+            contentScale = ContentScale.Crop)
 
 
-            Spacer(modifier = Modifier.padding(0.dp, 12.dp))
+        Column(
+            modifier = Modifier.background(
+                Brush.verticalGradient(
+                    listOf(Color.Transparent, Color.Black),
+                    startY = 0f,
+                    endY = 600f
+                )
+            )
+        ) {
 
+            Spacer(modifier = Modifier.requiredHeight(120.dp))
             Text(text = item.name,
                 modifier = Modifier.padding(24.dp, 0.dp),
                 fontWeight = FontWeight.Bold,
@@ -280,9 +285,12 @@ fun SushiItem(item: SushiItem) {
 
                 //OrderNow()
             }
-
-
         }
+
+
+
+
+
     }
 
 }
