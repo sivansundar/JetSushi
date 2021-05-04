@@ -4,20 +4,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarHalf
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
@@ -39,9 +41,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.sivan.jetsushi.datafactory.DataFactory
+import com.sivan.jetsushi.datafactory.SushiCategory
 import com.sivan.jetsushi.util.splitToWholeAndFraction
 
 
@@ -156,6 +161,10 @@ fun HeartButton() {
 
 @Composable
 fun ItemHeader(sushiItem: SushiItem) {
+
+    val categoryIDs = sushiItem.category
+    val categoryList = DataFactory().getSushiCategoryByIDAsList(categoryIDs)
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = "Sushi Rolls",
         modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
@@ -178,14 +187,131 @@ fun ItemHeader(sushiItem: SushiItem) {
                 RatingItem(value, sushiItem.rating)
             }
         }
+
+
+        CategoryView(categoryList)
+
+        SushiImage(sushiItem)
+
+        QuantitySection()
+        
         
     }
 }
 
+@Composable
+fun QuantitySection() {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Choose the quantity :",
+            modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+            fontSize = 16.sp)
+    }
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Row(modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceEvenly) {
+        QuantityItem(6)
+        QuantityItem(12)
+        QuantityItem(24)
+
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuantitySectionPreview() {
+    QuantitySection()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun QuantityItemPreview() {
+    QuantityItem(6)
+}
+
+
+@Composable
+fun QuantityItem(quantity: Int) {
+
+    var isSelected by remember { mutableStateOf(false) }
+
+
+    Surface(
+        modifier = Modifier.padding(8.dp),
+        elevation = 8.dp,
+        shape = RoundedCornerShape(16.dp),
+        color = when(isSelected) {
+         true -> MaterialTheme.colors.primary
+         false -> MaterialTheme.colors.background
+        }
+    ) {
+        Row(modifier = Modifier
+            .toggleable(
+                value = isSelected,
+                onValueChange = {
+                    isSelected = !isSelected
+                }
+            )) {
+            Text(
+                text = "$quantity units",
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.padding(12.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun CategoryView(categoryList: ArrayList<SushiCategory>) {
+    LazyRow(modifier = Modifier
+        .fillMaxWidth()
+        .padding(0.dp, 24.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly) {
+
+
+        items(items = categoryList, itemContent = {item ->
+            CategoryItem(item)
+        })
+    }
+}
+
+@Composable
+fun SushiImage(sushiItem: SushiItem) {
+    Row (modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center){
+        SushiImageCard(sushiItem)
+    }
+}
+
+@Composable
+fun SushiImageCard(sushiItem: SushiItem) {
+
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .height(250.dp)
+        .padding(24.dp),
+        elevation = 12.dp,
+        shape = RoundedCornerShape(18.dp)
+        ) {
+
+        Image(painter = painterResource(id = sushiItem.image),
+            contentDescription = "sushi image",
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.Crop
+
+        )
+
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun ItemHeaderPreview() {
-    val item = DataFactory().getSushi(1)
+    val item = DataFactory().getSushi(0)
     ItemHeader(item)
 }
 

@@ -12,7 +12,7 @@ class DataFactory {
                 name = "Sushi Octopus",
                 image = R.drawable.octopus_sushi,
                 combo = "Rice + Octopus",
-                category = listOf<Int>(1,2),
+                category = listOf<Int>(1,2, 3),
                 base_price = 6.50,
                 rating = 3.6f
 
@@ -30,6 +30,23 @@ class DataFactory {
         )
 
         return sushis
+    }
+
+    fun getSushiCategoryByID(id : Int): SushiCategory {
+        val sushis = getSushiCategory()
+
+        val item = sushis[id]
+        return item
+    }
+
+    fun getSushiCategoryByIDAsList(ids : List<Int>): ArrayList<SushiCategory> {
+        val sushis = getSushiCategory()
+
+        val itemList : ArrayList<SushiCategory> = ArrayList()
+        ids.forEachIndexed { index, i ->
+            itemList.add(sushis[index])
+        }
+        return itemList
     }
 
     fun getSushi(id : Int): SushiItem {
