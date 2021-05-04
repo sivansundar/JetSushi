@@ -11,6 +11,7 @@ data class SushiItem(
     var combo: String,
     var category: List<Int>,
     var base_price: Double,
+    var rating : Float
 
     ) : Parcelable{
 

@@ -13,7 +13,8 @@ class DataFactory {
                 image = R.drawable.octopus_sushi,
                 combo = "Rice + Octopus",
                 category = listOf<Int>(1,2),
-                base_price = 6.50
+                base_price = 6.50,
+                rating = 3.6f
 
             ),
 
@@ -23,8 +24,8 @@ class DataFactory {
                 image = R.drawable.salmon_sushi,
                 combo = "Rice + Salmon",
                 category = listOf<Int>(1,5),
-                base_price = 8.50
-
+                base_price = 8.50,
+                rating = 4.6f
             )
         )
 
