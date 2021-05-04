@@ -40,10 +40,14 @@ import com.sivan.jetsushi.ui.theme.JetSushiTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val lightgrey = Color(0xFFFCFCFC)
+
+
         super.onCreate(savedInstanceState)
         setContent {
             JetSushiTheme {
-                val lightgrey = Color(0xFFE4E4EB)
+
 
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
@@ -154,7 +158,7 @@ fun Categories() {
 
             items(items = sushiCategories, itemContent = {item ->
                 CategoryItem(item)
-                //Spacer(modifier = Modifier.padding(12.dp, 0.dp))
+                Spacer(modifier = Modifier.width(24.dp))
 
             })
 
@@ -378,6 +382,7 @@ fun CategoryItem(item: SushiCategory) {
 
            }
 
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(text = item.name,
                 modifier = Modifier.align(CenterHorizontally),
@@ -394,7 +399,7 @@ fun CategoryItem(item: SushiCategory) {
 @Composable
 fun DefaultPreview() {
     JetSushiTheme {
-        val lightgrey = Color(0xFFE4E4EB)
+        val lightgrey = Color(0xFFFCFCFC)
 
         Surface(color = MaterialTheme.colors.background) {
             Column(modifier = Modifier
