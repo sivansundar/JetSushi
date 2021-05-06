@@ -20,11 +20,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
-import androidx.compose.material.icons.rounded.StarHalf
-import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +40,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.sivan.jetsushi.datafactory.DataFactory
 import com.sivan.jetsushi.datafactory.SushiCategory
@@ -208,14 +205,115 @@ fun QuantitySection() {
     }
 
     Spacer(modifier = Modifier.height(24.dp))
+    
 
     Row(modifier = Modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.SpaceEvenly) {
+
+        var liked by remember { mutableStateOf(false) }
+
+
         QuantityItem(6)
         QuantityItem(12)
         QuantityItem(24)
 
     }
+
+    OrderNow()
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OrderNowItemPreview() {
+    OrderNow()
+}
+
+@Composable
+fun OrderNow() {
+    val textColor = MaterialTheme.colors.primarySurface
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(24.dp),
+        elevation = 8.dp,
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.wrapContentSize(),
+            verticalArrangement = Arrangement.Center){
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        CurrencyTextBig(basePrice = 6.0)
+                        OrderNowBig()
+                    }
+        }
+
+
+    }
+}
+
+@Composable
+fun OrderNowBig() {
+
+        Card(shape = CircleShape) {
+            Surface(modifier = Modifier.wrapContentSize(), color = Color.Black) {
+                Row( modifier = Modifier
+                    .wrapContentSize()
+                    .padding(14.dp)) {
+                    Text(
+                        text = "Place order",
+                        color = MaterialTheme.colors.surface
+                    )
+
+                    Icon(imageVector = Icons.Rounded.ShoppingCart, tint = MaterialTheme.colors.surface,
+                        contentDescription = "place order icon",
+                        modifier = Modifier.align(Alignment.CenterVertically))
+                }
+            }
+
+        }
+
+
+    }
+
+@Composable
+fun CurrencyTextBig(
+    basePrice: Double) {
+
+    val price = basePrice.toString().split(".")
+
+
+        Column(modifier = Modifier.wrapContentSize()) {
+            Row(modifier = Modifier.padding(24.dp, 0.dp)) {
+                Text(text = "$",
+                    fontSize = 18.sp)
+
+                Spacer(modifier = Modifier.padding(1.dp, 4.dp))
+
+                Text(text = price[0],
+                    fontSize = 28.sp)
+
+                Spacer(modifier = Modifier.padding(1.dp, 4.dp))
+
+                Text(text = ".${price[1]}0",
+                    fontSize = 18.sp)
+
+            }
+
+            Text(text = "Total Price",
+                fontSize = 12.sp,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(alignment = Alignment.CenterHorizontally))
+
+    }
+
+
 
 }
 
@@ -236,7 +334,6 @@ fun QuantityItemPreview() {
 fun QuantityItem(quantity: Int) {
 
     var isSelected by remember { mutableStateOf(false) }
-
 
     Surface(
         modifier = Modifier.padding(8.dp),

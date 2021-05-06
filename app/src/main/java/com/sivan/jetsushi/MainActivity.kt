@@ -299,51 +299,29 @@ fun SushiItem(item: SushiItem) {
 
 }
 
-@Composable
-fun OrderNow() {
-    val gradientColor1 = Color(0xFF4C5463)
-
-   Surface(
-       modifier = Modifier.padding(end = 8.dp),
-       elevation = 8.dp,
-       shape = RoundedCornerShape(12.dp),
-       color = gradientColor1
-   ) {
-    Row {
-        Text(text = "Order Now",
-
-        )
-    }
-   }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun OrderNowPreview() {
-    OrderNow()
-}
 
 @Composable
-fun CurrencyText(basePrice: Double) {
+fun CurrencyText(
+    basePrice: Double) {
+    val textColor = MaterialTheme.colors.surface
 
     val price = basePrice.toString().split(".")
 
     Row(modifier = Modifier.padding(24.dp, 0.dp)) {
         Text(text = "$",
-            color = Color.White,
+            color = textColor,
             fontSize = 12.sp)
 
         Spacer(modifier = Modifier.padding(1.dp, 4.dp))
 
         Text(text = price[0],
-            color = Color.White,
+            color = textColor,
             fontSize = 24.sp)
 
         Spacer(modifier = Modifier.padding(1.dp, 4.dp))
 
         Text(text = ".${price[1]}0",
-            color = Color.White,
+            color = textColor,
             fontSize = 12.sp)
     }
 }
@@ -353,6 +331,7 @@ fun CurrencyText(basePrice: Double) {
 @Composable
 fun CurrencyTextPreview() {
     val item = DataFactory().getSushi(1)
+
     CurrencyText(item.base_price)
 }
 
